@@ -6,13 +6,13 @@
   "font": "",
   "title": {
     "box": [
-      170,
-      120,
-      740,
-      300
+      130,
+      215,
+      820,
+      340
     ],
-    "size": 96,
-    "line_height": 130,
+    "size": 108,
+    "line_height": 142,
     "max_lines": 2,
     "bold": true,
     "align": "center",
