@@ -1,0 +1,6 @@
+{
+  "url": "https://doc.niallspace.com/ai/posts/components-dev",
+  "title": "如何用 AI 开发\n自己的设计组件库",
+  "subtitle": "从 Figma 到 Base UI 与 Storybook",
+  "summary": "三次尝试后，我找到了自己的分工：在 Figma 定好规则，让 AI 转成代码，用 Base UI 承载交互，再到 Storybook 检查调整。把设计判断变成明确规则，才能让 AI 的实现更可控。"
+}
