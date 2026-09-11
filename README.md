@@ -37,7 +37,7 @@ python3 -m venv .venv
 
 ### 配置
 
-`skills/link-to-fantuan-poster/assets/layout.json` 集中配置字号、颜色、区域和字体。底图固定，日常生成不调用图像生成服务。
+`skills/link-to-fantuan-poster/assets/layout.json` 集中配置字号、颜色、区域和字体。底图固定，日常生成不调用图像生成服务。标题上移，中部使用叠放的组件卡片插画衔接下方饭团，减少空洞留白。
 
 ### 开发与验证
 
@@ -82,7 +82,7 @@ Exports `poster.png`, `qr.png`, `copy.json`, and `verification.json`. Existing o
 
 ### Configuration
 
-`skills/link-to-fantuan-poster/assets/layout.json` centralizes font sizes, colors, regions and font selection. Routine rendering reuses the background without calling an image generation service.
+`skills/link-to-fantuan-poster/assets/layout.json` centralizes font sizes, colors, regions and font selection. Routine rendering reuses the background without calling an image generation service. The headline sits higher, with overlapping UI-card illustrations connecting it to the rice-ball character below.
 
 ### Development and Verification
 
