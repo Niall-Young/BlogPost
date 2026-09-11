@@ -7,11 +7,11 @@
 
 ### 项目简介
 
-Codex 技能：读取文章链接，提炼中文文案并输出固定饭团插画模板的 1080×1440 PNG 海报。
+Codex 技能：读取文章链接，提炼中文大标题并输出固定饭团插画模板的 1080×1440 PNG 海报。
 
 ### 核心能力
 
-固定标题、导语、摘要和二维码区域；程序排版；原图与 540×720 缩略图二维码校验。底图源自用户提供的模板，使用内置 imagegen 清除摘要占位横线和假二维码，保留其余元素。
+仅保留黑色大标题和二维码，关键词支持蓝紫渐变；程序排版；原图与 540×720 缩略图二维码校验。底图源自用户提供的模板，使用内置 imagegen 移除标题蓝底、副标题框、摘要卡片和假二维码，保留饭团与装饰。
 
 ### 快速开始
 
@@ -26,7 +26,7 @@ python3 -m venv .venv
 
 ### 使用方法
 
-代理负责读取并提炼正文，脚本负责抓取和确定性排版。JSON 必填 `url`、`title`、`subtitle`、`summary`。
+代理负责读取并提炼正文，脚本负责抓取和确定性排版。JSON 必填 `url`、`title`；可选 `highlight` 指定渐变关键词。旧 `subtitle`、`summary` 字段忽略。
 
 ```sh
 .venv/bin/python skills/link-to-fantuan-poster/scripts/poster.py fetch https://doc.niallspace.com/ai/posts/components-dev
@@ -45,18 +45,18 @@ python3 -m venv .venv
 .venv/bin/python -m unittest discover -s skills/link-to-fantuan-poster/scripts -p 'test_*.py'
 ```
 
-五项测试覆盖导出与重复输出、长标题、长链接、过密二维码和读取失败。交付前还需人工查看海报，程序解码不替代手机实扫。
+六项测试覆盖导出与重复输出、长标题、长链接、过密二维码、读取失败以及旧摘要字段不渲染。交付前还需人工查看海报，程序解码不替代手机实扫。
 
 <a id="english"></a>
 ## English
 
 ### Overview
 
-A Codex skill that reads an article URL, summarizes it in Chinese, and exports a 1080×1440 PNG using a fixed illustrated rice-ball template.
+A Codex skill that reads an article URL, extracts a short Chinese headline, and exports a 1080×1440 PNG using a fixed illustrated rice-ball template.
 
 ### Features
 
-Fixed title, subtitle, summary and QR regions; deterministic typography; QR decoding at full size and 540×720. The user supplied the template. Built-in imagegen removed placeholder summary lines and the fake QR symbol while preserving the other elements.
+Only a large black headline and QR code, with optional blue-purple gradient keywords; deterministic typography; QR decoding at full size and 540×720. The user supplied the template. Built-in imagegen removed the title pill, subtitle pill, summary card and fake QR symbol while preserving the character and decorations.
 
 ### Quick Start
 
@@ -71,7 +71,7 @@ Copy `skills/link-to-fantuan-poster` into `~/.codex/skills/`, then invoke `$link
 
 ### Usage
 
-The agent reads and summarizes the article; the script fetches content and renders the approved copy. JSON requires `url`, `title`, `subtitle`, and `summary`.
+The agent reads and summarizes the article; the script fetches content and renders the approved copy. JSON requires `url` and `title`; optional `highlight` selects gradient text. Legacy `subtitle` and `summary` fields are ignored.
 
 ```sh
 .venv/bin/python skills/link-to-fantuan-poster/scripts/poster.py fetch https://doc.niallspace.com/ai/posts/components-dev
@@ -90,4 +90,4 @@ Exports `poster.png`, `qr.png`, `copy.json`, and `verification.json`. Existing o
 .venv/bin/python -m unittest discover -s skills/link-to-fantuan-poster/scripts -p 'test_*.py'
 ```
 
-Five tests cover export and overwrite protection, long titles, long URLs, dense QR rejection, and fetch failure. Visually inspect the final poster before delivery; software decoding does not replace scanning with a phone.
+Six tests cover export and overwrite protection, long titles, long URLs, dense QR rejection, fetch failure, and omission of legacy summary fields. Visually inspect the final poster before delivery; software decoding does not replace scanning with a phone.

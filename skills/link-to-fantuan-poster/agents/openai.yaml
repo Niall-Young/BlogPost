@@ -1,4 +1,4 @@
 interface:
   display_name: "饭团链接海报"
-  short_description: "读取文章链接并生成固定饭团风格海报，包含中文摘要和可识别二维码"
+  short_description: "读取文章链接生成饭团海报，仅含醒目大标题、渐变关键词和可识别二维码"
   default_prompt: "使用 $link-to-fantuan-poster 将我提供的文章链接生成饭团风格海报。"

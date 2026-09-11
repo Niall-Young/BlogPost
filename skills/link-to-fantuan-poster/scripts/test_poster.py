@@ -6,7 +6,7 @@ from unittest.mock import patch
 from urllib.error import URLError
 from poster import render, fetch
 
-DATA = {'url':'https://doc.niallspace.com/ai/posts/components-dev', 'title':'如何用 AI 开发\n自己的设计组件库', 'subtitle':'设计规则与代码', 'summary':'在 Figma 定好设计规则，让 AI 批量转成代码，用 Base UI 承载交互，再到 Storybook 检查调整。'}
+DATA = {'url':'https://doc.niallspace.com/ai/posts/components-dev', 'title':'用 AI Vibe\n自己的组件库', 'highlight':'AI Vibe'}
 
 class PosterTests(unittest.TestCase):
     def test_url_and_export(self):
@@ -17,10 +17,15 @@ class PosterTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'already exists'):
                 render(DATA, Path(temp))
 
+    def test_legacy_copy_is_not_rendered(self):
+        with tempfile.TemporaryDirectory() as temp:
+            report = render(dict(DATA, subtitle='旧副标题', summary='旧摘要'), Path(temp))
+            self.assertEqual(set(report['lines']), {'title'})
+
     def test_long_title_rejected(self):
         with tempfile.TemporaryDirectory() as temp:
             with self.assertRaisesRegex(ValueError, 'overflows'):
-                render(dict(DATA, title='这是一个非常长的文章标题'*12), Path(temp))
+                render(dict(DATA, title='这是一个非常长的文章标题'*12, highlight=''), Path(temp))
             self.assertEqual(list(Path(temp).iterdir()), [])
 
     def test_long_url(self):

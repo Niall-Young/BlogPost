@@ -1,8 +1,31 @@
 {
-  "size": [1080, 1440],
+  "size": [
+    1080,
+    1440
+  ],
   "font": "",
-  "title": {"box": [195, 155, 690, 136], "size": 52, "line_height": 64, "max_lines": 2, "bold": true, "align": "center", "color": "#29466D"},
-  "subtitle": {"box": [265, 338, 550, 52], "size": 26, "line_height": 40, "max_lines": 1, "align": "center", "color": "#466184"},
-  "summary": {"box": [220, 534, 635, 236], "size": 30, "line_height": 47, "max_lines": 5, "align": "left", "color": "#46566E"},
-  "qr": [235, 876, 232]
+  "title": {
+    "box": [
+      170,
+      290,
+      740,
+      310
+    ],
+    "size": 96,
+    "line_height": 130,
+    "max_lines": 2,
+    "bold": true,
+    "align": "center",
+    "color": "#171925",
+    "stroke": 1,
+    "gradient": [
+      "#437EF7",
+      "#8754F4"
+    ]
+  },
+  "qr": [
+    235,
+    876,
+    232
+  ]
 }

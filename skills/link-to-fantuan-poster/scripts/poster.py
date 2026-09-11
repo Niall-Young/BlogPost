@@ -78,28 +78,42 @@ def wrap(text, font, width):
             lines.append(line.rstrip())
     return lines
 
-def draw_region(draw, text, spec):
+def draw_title(canvas, text, spec, highlight=''):
     x, y, width, height = spec['box']
-    font = get_font(spec['size'], spec.get('bold', False))
+    font = get_font(spec['size'], True)
     lines = wrap(text, font, width)
-    total = len(lines) * spec['line_height']
-    if len(lines) > spec['max_lines'] or total > height:
+    if len(lines) > spec['max_lines']:
         raise ValueError('Text overflows fixed region; shorten copy: ' + text)
-    top = y + (height - total) / 2
+    if highlight and not any(highlight in line for line in lines):
+        raise ValueError('Highlight must occur within one title line')
+    draw = ImageDraw.Draw(canvas)
+    top = y + (height - len(lines) * spec['line_height']) / 2
     for i, line in enumerate(lines):
-        left = x + (width - font.getlength(line)) / 2 if spec['align'] == 'center' else x
-        draw.text((left, top + i * spec['line_height']), line, font=font, fill=spec['color'], anchor='lt')
+        left = x + (width - font.getlength(line)) / 2
+        pos = (left, top + i * spec['line_height'] + font.getmetrics()[0])
+        draw.text(pos, line, font=font, fill=spec['color'], anchor='ls', stroke_width=spec['stroke'])
+        if highlight and highlight in line:
+            offset = font.getlength(line[:line.index(highlight)])
+            mask = Image.new('L', canvas.size)
+            ImageDraw.Draw(mask).text((left + offset, pos[1]), highlight, font=font, fill=255, anchor='ls', stroke_width=spec['stroke'])
+            a, b = [tuple(bytes.fromhex(c.lstrip('#'))) for c in spec['gradient']]
+            gradient = Image.new('RGB', canvas.size)
+            gd = ImageDraw.Draw(gradient)
+            for px in range(canvas.width):
+                t = max(0, min(1, (px-left-offset)/max(1,font.getlength(highlight))))
+                color = tuple(round(a[j]*(1-t)+b[j]*t) for j in range(3))
+                gd.line((px, 0, px, canvas.height), fill=color)
+            canvas.paste(gradient, (0,0), mask)
     return lines
 
 def render(data, output):
     url = valid_url(data['url'])
-    for field in ('title', 'subtitle', 'summary'):
+    for field in ('title',):
         if not isinstance(data.get(field), str) or not data[field].strip():
             raise ValueError('Missing nonempty field: ' + field)
     config = json.loads((ROOT / 'assets/layout.json').read_text())
     canvas = Image.open(ROOT / 'assets/background.png').convert('RGB').resize(tuple(config['size']), Image.Resampling.LANCZOS)
-    draw = ImageDraw.Draw(canvas)
-    lines = {key: draw_region(draw, data[key], config[key]) for key in ('title', 'subtitle', 'summary')}
+    lines = {'title': draw_title(canvas, data['title'], config['title'], data.get('highlight', ''))}
     qr = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, border=4, box_size=1)
     qr.add_data(url)
     qr.make(fit=True)
